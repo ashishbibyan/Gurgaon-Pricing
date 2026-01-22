@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gurgaon Pricing Update - OpenHouse</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏢</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    
+    .container { max-width: 900px; margin: 0 auto; }
+    
+    .header {
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border-bottom: 3px solid #1e40af;
+      animation: fadeIn 0.5s;
+    }
+    
+    .header-content { display: flex; align-items: center; gap: 16px; }
+    
+    .header-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+    }
+    
+    .header-title h1 {
+      font-size: 28px; font-weight: 700; color: #1e293b; line-height: 1.2;
+    }
+    
+    .header-title p { font-size: 14px; color: #64748b; margin-top: 4px; }
+    
+    .form-container {
+      background: #ffffff; padding: 32px;
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      animation: fadeIn 0.5s 0.1s backwards;
+    }
+    
+    .form-group { margin-bottom: 24px; }
+    
+    .form-group label {
+      display: block; font-size: 14px; font-weight: 600;
+      color: #334155; margin-bottom: 8px;
+    }
+    
+    .required { color: #ef4444; }
+    
+    select, input {
+      width: 100%; padding: 12px 16px; font-size: 15px;
+      background: #f8fafc; border: 2px solid #e2e8f0;
+      border-radius: 10px; color: #1e293b;
+      font-family: inherit; outline: none;
+      transition: all 0.2s; appearance: none;
+    }
+    
+    select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+    
+    select:disabled {
+      background: #f1f5f9; color: #94a3b8; cursor: not-allowed;
+    }
+    
+    select:focus, input:focus {
+      border-color: #1e40af; background: #ffffff;
+    }
+    
+    .config-table {
+      margin: 24px 0; border: 2px solid #e2e8f0;
+      border-radius: 12px; overflow: hidden;
+    }
+    
+    .table-header {
+      display: grid; grid-template-columns: 1fr 1fr 2fr;
+      gap: 16px; padding: 16px;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: #ffffff; font-weight: 600; font-size: 14px;
+    }
+    
+    .table-row {
+      display: grid; grid-template-columns: 1fr 1fr 2fr;
+      gap: 16px; padding: 16px; align-items: center;
+      border-top: 1px solid #e2e8f0;
+    }
+    
+    .table-row:nth-child(even) { background: #f8fafc; }
+    .table-row:nth-child(odd) { background: #ffffff; }
+    
+    .config-label { font-size: 14px; font-weight: 600; color: #1e40af; }
+    .area-label { font-size: 14px; color: #64748b; }
+    
+    .price-input {
+      padding: 10px 14px; font-size: 14px;
+      background: #ffffff; border: 2px solid #e2e8f0;
+      border-radius: 8px;
+    }
+    
+    .submit-btn {
+      width: 100%; padding: 14px 24px; font-size: 15px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: #ffffff; border: none; border-radius: 10px;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
+      transition: all 0.3s; outline: none;
+    }
+    
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.3);
+    }
+    
+    .submit-btn:disabled {
+      background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+      cursor: not-allowed; box-shadow: none;
+    }
+    
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid #ffffff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    
+    .alert {
+      margin-top: 20px; padding: 16px 20px; border-radius: 10px;
+      display: none; align-items: center; gap: 12px;
+      animation: fadeIn 0.3s;
+    }
+    
+    .alert.show { display: flex; }
+    
+    .alert-success {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 2px solid #10b981; color: #065f46;
+    }
+    
+    .alert-error {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border: 2px solid #ef4444; color: #991b1b;
+    }
+    
+    .footer {
+      margin-top: 24px; padding: 20px; background: #ffffff;
+      border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 0.5s 0.2s backwards;
+    }
+    
+    .status-dot {
+      width: 8px; height: 8px; background: #10b981;
+      border-radius: 50%; display: inline-block;
+    }
+    
+    .hidden { display: none !important; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      .table-header, .table-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-content">
+        <div class="header-icon">🏢</div>
+        <div class="header-title">
+          <h1>Gurgaon Pricing Update</h1>
+          <p>Bulk pricing entry • All 210 configurations included ✅</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-container">
+      <form id="pricingForm">
+        <div class="form-group">
+          <label for="locality">Locality <span class="required">*</span></label>
+          <select id="locality" required>
+            <option value="">Select Locality</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="property">Property Name <span class="required">*</span></label>
+          <select id="property" required disabled>
+            <option value="">Select Property</option>
+          </select>
+        </div>
+
+        <div id="configContainer" class="hidden">
+          <h3 style="margin: 20px 0 10px; font-size: 16px; font-weight: 600; color: #1e293b;">
+            Available Configurations (<span id="configCount">0</span>)
+          </h3>
+          
+          <div class="config-table">
+            <div class="table-header">
+              <div>Configuration</div>
+              <div>Area (Sqft)</div>
+              <div>Price (Lacs INR)</div>
+            </div>
+            <div id="configRows"></div>
+          </div>
+          
+          <p style="font-size: 13px; color: #64748b; margin-top: 12px; font-style: italic;">
+            💡 Leave prices blank for configurations you don't want to update
+          </p>
+        </div>
+
+        <button type="submit" id="submitBtn" class="submit-btn" disabled>
+          <span id="btnIcon">📋</span>
+          <span id="btnText">Select Property First</span>
+        </button>
+      </form>
+
+      <div id="successAlert" class="alert alert-success">
+        <div style="font-size: 22px;">✅</div>
+        <div>
+          <div style="font-size: 14px; font-weight: 600; margin-bottom: 2px;">Success!</div>
+          <div style="font-size: 13px;">All pricing data updated successfully</div>
+        </div>
+      </div>
+
+      <div id="errorAlert" class="alert alert-error">
+        <div style="font-size: 22px;">❌</div>
+        <div>
+          <div style="font-size: 14px; font-weight: 600; margin-bottom: 2px;">Update Failed</div>
+          <div style="font-size: 13px;">Please check console for details (F12)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+        <span class="status-dot"></span>
+        System Status: Online
+      </p>
+      <p style="font-size: 13px; color: #64748b; margin: 0;">
+        Integrated with Google Sheet • 48 Properties • 210 Configurations • Real-time updates
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // ========================================
+    // CONFIGURATION - PASTE YOUR GOOGLE APPS SCRIPT URL HERE
+    // ========================================
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHgGSJT7DvJHYnobjMo7cb5XNLGtxM0kt7QnKAmsKW0pM49chRmfnAIFbQti4PYrcy/exec';
+    const SHEET_ID = '1Xpn0vX7naCR88QtsIqfPf3CI2E5SbXYE-5YyELK5HJE';
+
+    // ========================================
+    // COMPLETE PROPERTY DATA - ALL 210 ENTRIES FROM CSV
+    // ========================================
+    const properties = [{"locality":"Nawada Fatehpur, Gurgaon","propName":"DLF The Skycourt","configs":["3 BHK"],"areas":{"3 BHK":["1929"]}},{"locality":"Sector 33 Gurgaon","propName":"JMD Gardens","configs":["3 BHK","4 BHK"],"areas":{"3 BHK":["1875"],"4 BHK":["2315"]}},{"locality":"Sector 48 Gurgaon","propName":"Parsvnath Green Ville","configs":["3 BHK"],"areas":{"3 BHK":["1665","1785","1945","2210"]}},{"locality":"Sector 68 Gurgaon","propName":"M3M Sierra 68","configs":["2 BHK"],"areas":{"2 BHK":["1202","1222"]}},{"locality":"Sector 68 Gurgaon","propName":"M3M The Marina","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1260","1272","1304","1330","1507"],"3 BHK":["1550","1650","1692","1746","1900","1914","1950"]}},{"locality":"Sector 69 Gurgaon","propName":"Tulip Purple","configs":["3 BHK","4 BHK"],"areas":{"3 BHK":["2250"],"4 BHK":["2400"]}},{"locality":"Sector 69 Gurgaon","propName":"Tulip Violet","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1350"],"3 BHK":["1578","1608","1638","1850"],"4 BHK":["2010","3156"]}},{"locality":"Sector 69 Gurgaon","propName":"Tulip White","configs":["3 BHK"],"areas":{"3 BHK":["1326"]}},{"locality":"Sector 69 Gurgaon","propName":"Tulip Yellow","configs":["3 BHK","5 BHK"],"areas":{"3 BHK":["1704"],"5 BHK":["2946"]}},{"locality":"Sector 70 Gurgaon","propName":"Tulip Orange","configs":["3 BHK"],"areas":{"3 BHK":["1137","1177","1437"]}},{"locality":"Sector 72 Gurgaon","propName":"Spaze Privy","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1755"],"3 BHK":["1975","2085"],"4 BHK":["2597"]}},{"locality":"Sector 77 Gurgaon","propName":"Emaar MGF Palm Hills","configs":["3 BHK","4 BHK"],"areas":{"3 BHK":["1450","1575"],"4 BHK":["1950"]}},{"locality":"Sector 77 Gurgaon","propName":"Umang Winter Hills","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1342"],"3 BHK":["1616","1822","2077"]}},{"locality":"Sector 78 Gurgaon","propName":"Umang Monsoon Breeze","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1250"],"3 BHK":["1650","1730","1847"],"4 BHK":["2349"]}},{"locality":"Sector 79 Gurgaon","propName":"Godrej 101","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1383","1559","1572"],"3 BHK":["2244","2366"]}},{"locality":"Sector 79 Gurgaon","propName":"Godrej Aria","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1351","1503"],"3 BHK":["1983"]}},{"locality":"Sector 79 Gurgaon","propName":"Mapsko Mount Ville","configs":["3 BHK","4 BHK"],"areas":{"3 BHK":["1490","1620","1815","1960"],"4 BHK":["2650"]}},{"locality":"Sector 81 Gurgaon","propName":"Bestech Park View Ananda","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1360"],"3 BHK":["1660","1810"]}},{"locality":"Sector 82 Gurgaon","propName":"Mapsko Casa Bella","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1410"],"3 BHK":["1430","1690","1960"],"4 BHK":["2535"]}},{"locality":"Sector 82 Gurgaon","propName":"Mapsko Royale Ville","configs":["3 BHK","5 BHK"],"areas":{"3 BHK":["1790","2300"],"5 BHK":["5320"]}},{"locality":"Sector 83 Gurgaon","propName":"Emaar Palm Gardens","configs":["3 BHK","5 BHK"],"areas":{"3 BHK":["1720","1850","1900","1950"],"5 BHK":["3750"]}},{"locality":"Sector 83 Gurgaon","propName":"Mapsko Paradise","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1050"],"3 BHK":["1340"]}},{"locality":"Sector 83 Gurgaon","propName":"Vatika City Homes","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1355"],"3 BHK":["1740"]}},{"locality":"Sector 83 Gurgaon","propName":"Vatika Gurgaon 21","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1245","1435"],"3 BHK":["1735","1785","1980"],"4 BHK":["2390"]}},{"locality":"Sector 83 Gurgaon","propName":"Vatika Lifestyle Homes","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1085"],"3 BHK":["1750"]}},{"locality":"Sector 84 Gurgaon","propName":"Antriksh Heights","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1125","1200","1350","1415","1450"],"3 BHK":["1350","1725","1825","2025","2095"],"4 BHK":["2095","2595"]}},{"locality":"Sector 84 Gurgaon","propName":"SS The Coralwood","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1320","1425"],"3 BHK":["1750","1890","2250"]}},{"locality":"Sector 84 Gurgaon","propName":"Spaze Privy AT4","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1610"],"3 BHK":["1918","2275","3193"]}},{"locality":"Sector 85 Gurgaon","propName":"Orris Aster Court","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1315","1375"],"3 BHK":["1587","1675"],"4 BHK":["1952"]}},{"locality":"Sector 85 Gurgaon","propName":"Orris Carnation Residency","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1075","1115"],"3 BHK":["1485","1500","1645"],"4 BHK":["1975"]}},{"locality":"Sector 86 Gurgaon","propName":"DLF New Town Heights 2","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1615"],"3 BHK":["1845","1930"],"4 BHK":["2356","2364"]}},{"locality":"Sector 86 Gurgaon","propName":"DLF The Skycourt","configs":["3 BHK"],"areas":{"3 BHK":["1900","1929"]}},{"locality":"Sector 88A Gurgaon","propName":"Godrej Icon","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1498","1630"],"3 BHK":["1835","2059"],"4 BHK":["2317"]}},{"locality":"Sector 88A Gurgaon","propName":"Godrej Oasis","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1307","1479","1616","1650"],"3 BHK":["1850","2066"]}},{"locality":"Sector 89 A Gurgaon","propName":"Vatika Seven Elements","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1605"],"3 BHK":["1960","2085","2090","3155"],"4 BHK":["2505"]}},{"locality":"Sector 89 Gurgaon","propName":"Tulip Petals","configs":["3 BHK"],"areas":{"3 BHK":["1550"]}},{"locality":"Sector 90 Gurgaon","propName":"DLF New Town Heights 1","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1615"],"3 BHK":["1930"],"4 BHK":["2364","2727"]}},{"locality":"Sector 90 Gurgaon","propName":"DLF Regal Gardens","configs":["3 BHK","4 BHK"],"areas":{"3 BHK":["1702","1737","1752","1778","1818","1967"],"4 BHK":["2225"]}},{"locality":"Sector 90 Gurgaon","propName":"Shree Vardhman Flora","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1300","1352"],"3 BHK":["1875","1950"]}},{"locality":"Sector 91 Gurgaon","propName":"DLF New Town Heights","configs":["3 BHK","4 BHK"],"areas":{"3 BHK":["1930"],"4 BHK":["2356","2364","2727"]}},{"locality":"Sector 91 Gurgaon","propName":"TARC Maceo","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1310","1404"],"3 BHK":["1862","2320","3231"],"4 BHK":["2724"]}},{"locality":"Sector 92 Gurgaon","propName":"Ansal Heights","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["1320"],"3 BHK":["1565","1770"]}},{"locality":"Sector 92 Gurgaon","propName":"Bestech Park View Sanskruti","configs":["3 BHK","4 BHK"],"areas":{"3 BHK":["1920","1995","2120"],"4 BHK":["2325","2475"]}},{"locality":"Sector 92 Gurgaon","propName":"Raheja Navodaya","configs":["1 BHK","2 BHK","3 BHK"],"areas":{"1 BHK":["1100"],"2 BHK":["1498"],"3 BHK":["1990"]}},{"locality":"Sector 92 Gurgaon","propName":"Sare Crescent Parc","configs":["3 BHK","4 BHK"],"areas":{"3 BHK":["1326","1523"],"4 BHK":["2092"]}},{"locality":"Sector 92 Gurgaon","propName":"Sare Homes","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1000"],"3 BHK":["1184","1326","1523"],"4 BHK":["1706","1883","2040","2090","2162","2200","2226","2280"]}},{"locality":"Sector 92 Gurgaon","propName":"Signature Global City 92","configs":["2 BHK","3 BHK"],"areas":{"2 BHK":["959","1050","1200"],"3 BHK":["1200"]}},{"locality":"Sector 93 Gurgaon","propName":"Spaze Privvy The Address","configs":["2 BHK","3 BHK","4 BHK"],"areas":{"2 BHK":["1386"],"3 BHK":["1805","1840","2105"],"4 BHK":["4246"]}}];
+
+    // Get unique localities
+    const localities = [...new Set(properties.map(p => p.locality))].sort();
+
+    // ========================================
+    // DOM ELEMENTS
+    // ========================================
+    const localitySelect = document.getElementById('locality');
+    const propertySelect = document.getElementById('property');
+    const configContainer = document.getElementById('configContainer');
+    const configRows = document.getElementById('configRows');
+    const configCount = document.getElementById('configCount');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    const successAlert = document.getElementById('successAlert');
+    const errorAlert = document.getElementById('errorAlert');
+    const form = document.getElementById('pricingForm');
+
+    // ========================================
+    // INITIALIZATION
+    // ========================================
+    function init() {
+      console.log('🏢 Gurgaon Pricing Form Initialized');
+      console.log('📊 Total Properties:', properties.length);
+      console.log('🌍 Localities:', localities.length);
+      console.log('📋 Total Configurations:', properties.reduce((sum, p) => 
+        sum + Object.values(p.areas).reduce((s, areas) => s + areas.length, 0), 0));
+      
+      // Populate localities
+      localities.forEach(locality => {
+        const option = document.createElement('option');
+        option.value = locality;
+        option.textContent = locality;
+        localitySelect.appendChild(option);
+      });
+
+      // Event listeners
+      localitySelect.addEventListener('change', handleLocalityChange);
+      propertySelect.addEventListener('change', handlePropertyChange);
+      form.addEventListener('submit', handleSubmit);
+      
+      console.log('✅ Form ready!');
+    }
+
+    // ========================================
+    // EVENT HANDLERS
+    // ========================================
+    function handleLocalityChange() {
+      const selectedLocality = localitySelect.value;
+      
+      propertySelect.innerHTML = '<option value="">Select Property</option>';
+      propertySelect.disabled = !selectedLocality;
+      configContainer.classList.add('hidden');
+      configRows.innerHTML = '';
+      
+      if (selectedLocality) {
+        const localityProperties = properties.filter(p => p.locality === selectedLocality);
+        localityProperties.forEach(prop => {
+          const option = document.createElement('option');
+          option.value = prop.propName;
+          option.textContent = prop.propName;
+          propertySelect.appendChild(option);
+        });
+        console.log('📍 Loaded', localityProperties.length, 'properties for', selectedLocality);
+      }
+      
+      updateSubmitButton();
+    }
+
+    function handlePropertyChange() {
+      const selectedLocality = localitySelect.value;
+      const selectedProperty = propertySelect.value;
+      
+      if (!selectedProperty) {
+        configContainer.classList.add('hidden');
+        configRows.innerHTML = '';
+        updateSubmitButton();
+        return;
+      }
+      
+      const property = properties.find(p => 
+        p.locality === selectedLocality && p.propName === selectedProperty
+      );
+      
+      if (property) {
+        configRows.innerHTML = '';
+        let totalConfigs = 0;
+        
+        property.configs.forEach(config => {
+          property.areas[config].forEach(area => {
+            const row = document.createElement('div');
+            row.className = 'table-row';
+            row.innerHTML = `
+              <div class="config-label">${config}</div>
+              <div class="area-label">${area} sqft</div>
+              <input 
+                type="number" 
+                step="0.01" 
+                class="price-input" 
+                placeholder="Enter price"
+                data-config="${config}"
+                data-area="${area}"
+              >
+            `;
+            configRows.appendChild(row);
+            totalConfigs++;
+          });
+        });
+        
+        configCount.textContent = totalConfigs;
+        configContainer.classList.remove('hidden');
+        
+        console.log('🏘️ Loaded', totalConfigs, 'configurations for', selectedProperty);
+        
+        document.querySelectorAll('.price-input').forEach(input => {
+          input.addEventListener('input', updateSubmitButton);
+        });
+      }
+      
+      updateSubmitButton();
+    }
+
+    function updateSubmitButton() {
+      const priceInputs = document.querySelectorAll('.price-input');
+      const filledPrices = Array.from(priceInputs).filter(input => 
+        input.value && parseFloat(input.value) > 0
+      );
+      
+      if (filledPrices.length > 0) {
+        submitBtn.disabled = false;
+        btnIcon.textContent = '💾';
+        btnText.textContent = `Update Pricing (${filledPrices.length} entries)`;
+      } else if (propertySelect.value) {
+        submitBtn.disabled = false;
+        btnIcon.textContent = '📝';
+        btnText.textContent = 'Update Pricing';
+      } else {
+        submitBtn.disabled = true;
+        btnIcon.textContent = '📋';
+        btnText.textContent = 'Select Property First';
+      }
+    }
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+      
+      console.log('========================================');
+      console.log('📤 FORM SUBMISSION STARTED');
+      console.log('========================================');
+      
+      // Check URL
+      if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+        console.error('❌ Google Script URL not configured!');
+        alert('⚠️ Setup Required!\n\nPlease configure your Google Apps Script URL.\n\nSee setup instructions in the code or documentation.');
+        return;
+      }
+      
+      // Hide alerts
+      successAlert.classList.remove('show');
+      errorAlert.classList.remove('show');
+      
+      const selectedLocality = localitySelect.value;
+      const selectedProperty = propertySelect.value;
+      
+      const priceInputs = document.querySelectorAll('.price-input');
+      const entries = Array.from(priceInputs)
+        .filter(input => input.value && parseFloat(input.value) > 0)
+        .map(input => ({
+          configuration: input.dataset.config,
+          area: input.dataset.area,
+          price: input.value
+        }));
+      
+      if (entries.length === 0) {
+        alert('⚠️ Please enter at least one price');
+        return;
+      }
+      
+      console.log('📊 Submitting', entries.length, 'entries');
+      console.log('🏘️ Property:', selectedProperty);
+      console.log('📍 Locality:', selectedLocality);
+      
+      // Disable button
+      submitBtn.disabled = true;
+      btnText.innerHTML = '<div class="spinner"></div><span>Updating...</span>';
+      btnText.style.display = 'flex';
+      btnText.style.alignItems = 'center';
+      btnText.style.gap = '10px';
+      
+      try {
+        let successCount = 0;
+        let errorCount = 0;
+        
+        for (const entry of entries) {
+          try {
+            await fetch(GOOGLE_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                locality: selectedLocality,
+                propName: selectedProperty,
+                configuration: entry.configuration,
+                area: entry.area,
+                price: entry.price,
+                timestamp: new Date().toISOString()
+              })
+            });
+            successCount++;
+            console.log('✅ Sent:', entry.configuration, '-', entry.area, 'sqft - ₹', entry.price);
+            await new Promise(resolve => setTimeout(resolve, 100));
+          } catch (err) {
+            errorCount++;
+            console.error('❌ Failed:', err);
+          }
+        }
+        
+        console.log('========================================');
+        console.log('✅ SUCCESS:', successCount, 'entries');
+        if (errorCount > 0) console.log('❌ ERRORS:', errorCount);
+        console.log('========================================');
+        
+        successAlert.classList.add('show');
+        
+        setTimeout(() => {
+          form.reset();
+          propertySelect.disabled = true;
+          configContainer.classList.add('hidden');
+          configRows.innerHTML = '';
+          successAlert.classList.remove('show');
+          updateSubmitButton();
+        }, 3000);
+        
+      } catch (error) {
+        console.error('========================================');
+        console.error('❌ ERROR:', error);
+        console.error('========================================');
+        errorAlert.classList.add('show');
+      } finally {
+        submitBtn.disabled = false;
+        btnIcon.textContent = '💾';
+        btnText.textContent = 'Update Pricing';
+        btnText.style.display = '';
+      }
+    }
+
+    // ========================================
+    // START
+    // ========================================
+    init();
+  </script>
+</body>
+</html>
